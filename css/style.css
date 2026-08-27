@@ -1,0 +1,505 @@
+/* ============================================================
+   To-Do List Life Dashboard — style.css
+   Single stylesheet for all visual styling (Requirement 10.3)
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. CSS Custom Properties (Design Tokens)
+   ------------------------------------------------------------ */
+:root {
+  /* Dark Theme (Default) */
+  --color-bg:      #1a1a2e;   /* deep navy — page background */
+  --color-surface: #16213e;   /* slightly lighter — widget card background */
+  --color-accent:  #0f3460;   /* accent for buttons and highlights */
+  --color-accent-hover: #e94560; /* hover/active accent */
+  --color-text:    #e0e0e0;   /* primary text */
+  --color-text-muted: #9e9e9e; /* secondary / muted text */
+  --color-border:  #0f3460;   /* subtle border */
+  --color-error:   #e94560;   /* error state */
+  --color-success: #4caf50;   /* success / completed state */
+
+  /* Shape */
+  --radius: 12px;
+  --radius-sm: 6px;
+
+  /* Spacing */
+  --gap: 1rem;
+  --gap-lg: 1.5rem;
+  --padding-card: 1.5rem;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.5rem;
+  --font-size-xxl: 2rem;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+}
+
+[data-theme="light"] {
+  --color-bg: #f4f6f8;
+  --color-surface: #ffffff;
+  --color-accent: #e5e7eb;
+  --color-accent-hover: #005fcc;
+  --color-text: #1a1a1a;
+  --color-text-muted: #666666;
+  --color-border: #d1d5db;
+  --color-error: #dc2626;
+}
+
+/* ------------------------------------------------------------
+   2. CSS Reset
+   ------------------------------------------------------------ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* ------------------------------------------------------------
+   3. Base Body Styles
+   ------------------------------------------------------------ */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-normal);
+  line-height: 1.6;
+  min-height: 100vh;
+  padding: var(--gap);
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: flex-end;
+  max-width: 1200px;
+  margin: 0 auto var(--gap) auto;
+}
+
+/* ------------------------------------------------------------
+   4. Dashboard Grid Layout
+   ------------------------------------------------------------ */
+.dashboard-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--gap-lg);
+  }
+}
+
+/* ------------------------------------------------------------
+   5. Widget Card (section) Styles
+   ------------------------------------------------------------ */
+.dashboard-grid section {
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  padding: var(--padding-card);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.dashboard-grid section h2,
+.widget-title {
+  margin: 0 0 1rem 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 0.5rem;
+}
+
+/* ------------------------------------------------------------
+   6. Button Styles
+   ------------------------------------------------------------ */
+button {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.9rem;
+  background-color: var(--color-accent);
+  color: var(--color-text);
+  transition: background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              opacity var(--transition-fast);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+button:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #ffffff;
+}
+
+button:focus-visible {
+  outline: 2px solid var(--color-accent-hover);
+  outline-offset: 3px;
+}
+
+button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ------------------------------------------------------------
+   7. Form Input & Select Styles
+   ------------------------------------------------------------ */
+input[type="text"],
+input[type="url"],
+select {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  width: 100%;
+  transition: border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
+}
+
+input[type="text"]:focus,
+input[type="url"]:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent-hover);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.25);
+}
+
+input[type="text"]::placeholder,
+input[type="url"]::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* ------------------------------------------------------------
+   8. Checkbox Styles
+   ------------------------------------------------------------ */
+input[type="checkbox"] {
+  width: 1.1rem;
+  height: 1.1rem;
+  cursor: pointer;
+  accent-color: var(--color-accent-hover);
+  flex-shrink: 0;
+}
+
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--color-accent-hover);
+  outline-offset: 2px;
+}
+
+/* ------------------------------------------------------------
+   9. Utility Classes
+   ------------------------------------------------------------ */
+.hidden {
+  display: none !important;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.error-msg {
+  display: block;
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  margin-top: 0.25rem;
+}
+
+/* ------------------------------------------------------------
+   10. Storage Error Banners
+   ------------------------------------------------------------ */
+#storage-error-banner {
+  background-color: var(--color-error);
+  color: #fff;
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  padding: 0.65rem 1.25rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: var(--gap);
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#storage-save-banner {
+  position: fixed;
+  bottom: 1.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #b71c1c;
+  color: #fff;
+  font-weight: var(--font-weight-medium);
+  text-align: center;
+  padding: 0.65rem 1.5rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  opacity: 1;
+  transition: opacity 0.5s ease;
+  min-width: 220px;
+  max-width: 90vw;
+}
+
+#storage-save-banner.banner--hiding {
+  opacity: 0;
+}
+
+@keyframes banner-fadein {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+#storage-save-banner:not([hidden]) {
+  animation: banner-fadein 0.2s ease forwards;
+}
+
+/* ------------------------------------------------------------
+   11. Greeting Widget
+   ------------------------------------------------------------ */
+#greeting-widget .greeting-time {
+  font-size: var(--font-size-xxl);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.04em;
+  line-height: 1.2;
+}
+
+#greeting-widget .greeting-date {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-muted);
+  margin-top: 0.25rem;
+}
+
+#greeting-widget .greeting-message {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  margin-top: 0.5rem;
+  color: var(--color-accent-hover);
+}
+
+/* ------------------------------------------------------------
+   12. Focus Timer & Presets
+   ------------------------------------------------------------ */
+.timer-presets {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.btn--preset {
+  font-size: var(--font-size-sm);
+  padding: 0.25rem 0.65rem;
+  background-color: var(--color-bg);
+}
+
+.btn--preset.active {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  color: #ffffff;
+}
+
+#focus-timer .timer-display {
+  font-size: 3.5rem;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: 0.06em;
+  text-align: center;
+  padding: 0.5rem 0 1rem 0;
+  font-variant-numeric: tabular-nums;
+  transition: color var(--transition-base);
+}
+
+#focus-timer .timer-controls {
+  display: flex;
+  gap: var(--gap);
+  justify-content: center;
+  margin-top: 0.75rem;
+}
+
+.timer--session-end {
+  animation: timer-pulse 1s ease-in-out infinite;
+  color: var(--color-error);
+}
+
+@keyframes timer-pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+/* ------------------------------------------------------------
+   13. Task Manager & Sorting
+   ------------------------------------------------------------ */
+#task-manager .add-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: var(--gap);
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+#task-manager .add-form input[type="text"] {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.task-sort-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--gap);
+  font-size: var(--font-size-sm);
+}
+
+.sort-label {
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+#task-manager .task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.6rem;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+}
+
+.task-description {
+  flex: 1 1 0;
+  min-width: 0;
+  word-break: break-word;
+}
+
+.task-item.completed .task-description {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+.task-item .task-edit-input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.task-item .task-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.task-item .task-edit-btn,
+.task-item .task-delete-btn,
+.task-item .task-save-btn,
+.task-item .task-cancel-btn {
+  padding: 0.25rem 0.6rem;
+  font-size: var(--font-size-sm);
+}
+
+/* ------------------------------------------------------------
+   14. Quick Links Panel
+   ------------------------------------------------------------ */
+#quick-links-panel .add-form--links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: var(--gap);
+}
+
+#quick-links-panel .add-form__fields {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+#quick-links-panel .add-form__fields input {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+#quick-links-panel .links-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.quick-link-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  padding: 0.25rem 0.5rem;
+}
+
+.quick-link-btn {
+  flex: 1 1 0;
+  min-width: 0;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.quick-link-btn:hover {
+  color: var(--color-accent-hover);
+}
+
+.link-delete-btn {
+  flex-shrink: 0;
+  padding: 0.25rem 0.6rem;
+  font-size: var(--font-size-sm);
+}

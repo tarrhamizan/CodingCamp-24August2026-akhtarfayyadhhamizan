@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Life Dashboard</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+
+    <!-- Storage unavailability banner -->
+    <div
+      id="storage-error-banner"
+      class="banner banner--error"
+      aria-live="polite"
+      role="alert"
+      hidden
+    >
+      Storage is unavailable. Your data cannot be saved in this session.
+    </div>
+
+    <!-- Save failure banner -->
+    <div
+      id="storage-save-banner"
+      class="banner banner--warning"
+      aria-live="polite"
+      role="status"
+      hidden
+    >
+      Data could not be saved.
+    </div>
+
+    <!-- Header / Theme Toggle Container -->
+    <header class="dashboard-header">
+      <h1 class="sr-only">Life Dashboard</h1>
+      <button
+        id="theme-toggle"
+        class="btn btn--secondary theme-toggle-btn"
+        type="button"
+        aria-label="Toggle dark mode"
+        aria-pressed="false"
+      >
+        🌙 Dark Mode
+      </button>
+    </header>
+
+    <main class="dashboard-grid">
+
+      <!-- 1. Greeting Widget -->
+      <section id="greeting-widget" aria-label="Greeting and current time">
+        <h2 class="widget-title">Welcome</h2>
+        <p id="greeting-time" class="greeting-time" aria-label="Current time">--:--</p>
+        <p id="greeting-date" class="greeting-date" aria-label="Current date"></p>
+        <p id="greeting-message" class="greeting-message" aria-label="Greeting message"></p>
+      </section>
+
+      <!-- 2. Focus Timer -->
+      <section id="focus-timer" aria-label="Focus timer">
+        <h2 class="widget-title">Focus Timer</h2>
+        
+        <!-- Challenge: Change Pomodoro Time Presets -->
+        <div class="timer-presets" role="group" aria-label="Timer duration options">
+          <button type="button" class="btn btn--preset" data-minutes="15" aria-label="Set timer to 15 minutes" aria-pressed="false">15m</button>
+          <button type="button" class="btn btn--preset active" data-minutes="25" aria-label="Set timer to 25 minutes" aria-pressed="true">25m</button>
+          <button type="button" class="btn btn--preset" data-minutes="50" aria-label="Set timer to 50 minutes" aria-pressed="false">50m</button>
+        </div>
+
+        <div
+          id="timer-display"
+          class="timer-display"
+          aria-label="Remaining time"
+          aria-live="off"
+          role="timer"
+        >25:00</div>
+
+        <div class="timer-controls" role="group" aria-label="Timer controls">
+          <button
+            id="btn-start"
+            class="btn btn--primary"
+            type="button"
+            aria-label="Start timer"
+            aria-disabled="false"
+          >Start</button>
+          <button
+            id="btn-stop"
+            class="btn btn--secondary"
+            type="button"
+            aria-label="Stop timer"
+            disabled
+            aria-disabled="true"
+          >Stop</button>
+          <button
+            id="btn-reset"
+            class="btn btn--secondary"
+            type="button"
+            aria-label="Reset timer"
+            aria-disabled="false"
+          >Reset</button>
+        </div>
+      </section>
+
+      <!-- 3. Task Manager -->
+      <section id="task-manager" aria-label="Task manager">
+        <h2 class="widget-title">Tasks</h2>
+
+        <form id="task-form" class="add-form" novalidate aria-label="Add new task">
+          <label for="task-input" class="sr-only">New task description</label>
+          <input
+            id="task-input"
+            class="add-form__input"
+            type="text"
+            name="description"
+            placeholder="Add a new task…"
+            maxlength="500"
+            aria-label="New task description"
+            autocomplete="off"
+          />
+          <button
+            type="submit"
+            class="btn btn--primary"
+            aria-label="Add task"
+          >Add</button>
+        </form>
+        <span id="task-input-error" class="error-msg" role="alert" aria-live="polite" hidden></span>
+
+        <!-- Challenge: Sort Tasks Option -->
+        <div class="task-sort-container">
+          <label for="task-sort-select" class="sort-label">Sort by:</label>
+          <select id="task-sort-select" class="sort-select" aria-label="Sort tasks">
+            <option value="newest">Newest First</option>
+            <option value="oldest">Oldest First</option>
+            <option value="alphabetical">Alphabetical (A-Z)</option>
+            <option value="completed">Completed Status</option>
+          </select>
+        </div>
+
+        <ul
+          id="task-list"
+          class="task-list"
+          aria-label="Task list"
+          aria-live="polite"
+          aria-relevant="additions removals"
+        ></ul>
+      </section>
+
+      <!-- 4. Quick Links Panel -->
+      <section id="quick-links-panel" aria-label="Quick links">
+        <h2 class="widget-title">Quick Links</h2>
+
+        <form id="link-form" class="add-form add-form--links" novalidate aria-label="Add new quick link">
+          <div class="add-form__fields">
+            <label for="link-label-input" class="sr-only">Link label</label>
+            <input
+              id="link-label-input"
+              class="add-form__input"
+              type="text"
+              name="label"
+              placeholder="Label (e.g. GitHub)"
+              maxlength="50"
+              aria-label="Link label"
+              autocomplete="off"
+            />
+            <label for="link-url-input" class="sr-only">Link URL</label>
+            <input
+              id="link-url-input"
+              class="add-form__input"
+              type="url"
+              name="url"
+              placeholder="URL (https://…)"
+              maxlength="2048"
+              aria-label="Link URL"
+              autocomplete="off"
+            />
+          </div>
+          <button
+            type="submit"
+            class="btn btn--primary"
+            aria-label="Add link"
+          >Add Link</button>
+        </form>
+        <span id="link-form-error" class="error-msg" role="alert" aria-live="polite" hidden></span>
+
+        <div
+          id="links-container"
+          class="links-container"
+          aria-label="Saved quick links"
+          aria-live="polite"
+          aria-relevant="additions removals"
+        ></div>
+      </section>
+
+    </main>
+
+    <script src="js/app.js"></script>
+  </body>
+</html>
