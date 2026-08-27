@@ -6,7 +6,8 @@
 /* ------------------------------------------------------------
    1. CSS Custom Properties (Design Tokens)
    ------------------------------------------------------------ */
-:root {
+:root,
+[data-theme="dark"] {
   /* Dark Theme (Default) */
   --color-bg:      #1a1a2e;   /* deep navy — page background */
   --color-surface: #16213e;   /* slightly lighter — widget card background */
@@ -53,6 +54,7 @@
   --color-text-muted: #666666;
   --color-border: #d1d5db;
   --color-error: #dc2626;
+  --color-success: #16a34a;
 }
 
 /* ------------------------------------------------------------
@@ -100,7 +102,7 @@ body {
 }
 
 /* ------------------------------------------------------------
-   4. Dashboard Grid Layout
+   4. Dashboard Grid Layout (mobile-first, single column)
    ------------------------------------------------------------ */
 .dashboard-grid {
   display: flex;
@@ -126,7 +128,7 @@ body {
   border-radius: var(--radius);
   border: 1px solid var(--color-border);
   padding: var(--padding-card);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
   transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 
@@ -373,7 +375,8 @@ input[type="checkbox"]:focus-visible {
 /* ------------------------------------------------------------
    13. Task Manager & Sorting
    ------------------------------------------------------------ */
-#task-manager .add-form {
+#task-manager .add-form,
+#task-manager .task-form {
   display: flex;
   gap: 0.5rem;
   margin-bottom: var(--gap);
@@ -381,7 +384,8 @@ input[type="checkbox"]:focus-visible {
   flex-wrap: wrap;
 }
 
-#task-manager .add-form input[type="text"] {
+#task-manager .add-form input[type="text"],
+#task-manager .task-form input[type="text"] {
   flex: 1 1 0;
   min-width: 0;
 }
@@ -448,21 +452,24 @@ input[type="checkbox"]:focus-visible {
 /* ------------------------------------------------------------
    14. Quick Links Panel
    ------------------------------------------------------------ */
-#quick-links-panel .add-form--links {
+#quick-links-panel .add-form--links,
+#quick-links-panel .link-form {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
   margin-bottom: var(--gap);
 }
 
-#quick-links-panel .add-form__fields {
+#quick-links-panel .add-form__fields,
+#quick-links-panel .link-form-row {
   display: flex;
   gap: 0.5rem;
   align-items: flex-start;
   flex-wrap: wrap;
 }
 
-#quick-links-panel .add-form__fields input {
+#quick-links-panel .add-form__fields input,
+#quick-links-panel .link-form-row input {
   flex: 1 1 0;
   min-width: 0;
 }
@@ -473,7 +480,8 @@ input[type="checkbox"]:focus-visible {
   gap: 0.5rem;
 }
 
-.quick-link-item {
+.quick-link-item,
+.link-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -483,7 +491,8 @@ input[type="checkbox"]:focus-visible {
   padding: 0.25rem 0.5rem;
 }
 
-.quick-link-btn {
+.quick-link-btn,
+.link-btn {
   flex: 1 1 0;
   min-width: 0;
   text-align: left;
@@ -494,7 +503,8 @@ input[type="checkbox"]:focus-visible {
   text-decoration: none;
 }
 
-.quick-link-btn:hover {
+.quick-link-btn:hover,
+.link-btn:hover {
   color: var(--color-accent-hover);
 }
 

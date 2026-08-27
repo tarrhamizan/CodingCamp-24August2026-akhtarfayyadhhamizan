@@ -62,15 +62,14 @@
     init() {
       const btn = document.getElementById('theme-toggle');
       const savedTheme = StorageManager.load(StorageManager.KEYS.THEME);
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const currentTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+      const currentTheme = savedTheme || 'dark';
 
       this.applyTheme(currentTheme);
 
       if (btn) {
         btn.addEventListener('click', () => {
-          const active = document.body.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
-          const newTheme = active === 'dark' ? 'light' : 'dark';
+          const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+          const newTheme = isLight ? 'dark' : 'light';
           this.applyTheme(newTheme);
           StorageManager.save(StorageManager.KEYS.THEME, newTheme);
         });
@@ -79,19 +78,21 @@
 
     applyTheme(theme) {
       const btn = document.getElementById('theme-toggle');
-      if (theme === 'dark') {
-        document.body.setAttribute('data-theme', 'dark');
+      if (theme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        document.body.setAttribute('data-theme', 'light');
         if (btn) {
           btn.setAttribute('aria-pressed', 'true');
-          btn.textContent = '☀️ Light Mode';
-          btn.setAttribute('aria-label', 'Switch to light mode');
-        }
-      } else {
-        document.body.removeAttribute('data-theme');
-        if (btn) {
-          btn.setAttribute('aria-pressed', 'false');
           btn.textContent = '🌙 Dark Mode';
           btn.setAttribute('aria-label', 'Switch to dark mode');
+        }
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.body.setAttribute('data-theme', 'dark');
+        if (btn) {
+          btn.setAttribute('aria-pressed', 'false');
+          btn.textContent = '☀️ Light Mode';
+          btn.setAttribute('aria-label', 'Switch to light mode');
         }
       }
     }
@@ -152,7 +153,7 @@
 
     _state: 'IDLE',
     _remaining: 1500,
-    _initialDuration: 1500, // Default 25 min (in seconds)
+    _initialDuration: 1500,
     _intervalId: null,
 
     _elDisplay: null,
@@ -190,7 +191,6 @@
       this._btnStop   = document.getElementById('btn-stop');
       this._btnReset  = document.getElementById('btn-reset');
 
-      // Load saved duration if available
       const savedMinutes = StorageManager.load(StorageManager.KEYS.TIMER_DURATION);
       if (typeof savedMinutes === 'number' && savedMinutes > 0) {
         this._initialDuration = savedMinutes * 60;
@@ -208,7 +208,6 @@
       if (this._btnStop)  this._btnStop.addEventListener('click',  () => this.stop());
       if (this._btnReset) this._btnReset.addEventListener('click', () => this.reset());
 
-      // Wire duration preset buttons
       const presetContainer = document.querySelector('.timer-presets');
       if (presetContainer) {
         presetContainer.addEventListener('click', (e) => {
@@ -356,7 +355,6 @@
       if (_sortBy === 'completed') {
         return copy.sort((a, b) => Number(a.completed) - Number(b.completed));
       }
-      // Default: 'newest'
       return copy.sort((a, b) => b.createdAt - a.createdAt);
     },
 
@@ -471,7 +469,6 @@
         _tasks = [];
       }
 
-      // Load saved sort preference
       const savedSort = StorageManager.load(StorageManager.KEYS.SORT_KEY);
       if (savedSort) _sortBy = savedSort;
 
@@ -828,10 +825,10 @@
       _links = _links.filter((l) => l.id !== id);
       this._persist();
       this._render();
-    },
+    }
   };
 
-  // ─── Application Bootstrap ──────────────────────────────────────────────────
+  // ─── Initialize All Modules ─────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
     ThemeManager.init();
     GreetingWidget.init();
@@ -839,5 +836,5 @@
     TaskManager.init();
     QuickLinksPanel.init();
   });
-
+  
 })();
